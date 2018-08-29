@@ -3,7 +3,7 @@
 	"description": "Shows your current and best time for every completed objective/level",
 	"author": "jan-di",
 	"contact": "mail@jand.one",
-	"version": "1.0",
+	"version": "1.0.0",
 	"blt_version": 2,
 	"color": "249 120 44",
 	"updates": [
