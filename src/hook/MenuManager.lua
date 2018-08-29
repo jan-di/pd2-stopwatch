@@ -35,15 +35,15 @@ Hooks:Add("MenuManagerInitialize", "Stopwatch_MenuManagerInitialize", function(m
 	end
 	
 	MenuCallbackHandler.callback_btn_reset = function(self, item)
-		local menu_title = Util.localize("stopwatch_msg_reset_title")
-		local menu_message = Util.localize("stopwatch_msg_reset_message")
+		local menu_title = Util:localize("stopwatch_msg_reset_title")
+		local menu_message = Util:localize("stopwatch_msg_reset_message")
 		local menu_options = {
 			[1] = {
-				text = Util.localize("stopwatch_msg_reset_btn_ok"),
+				text = Util:localize("stopwatch_msg_reset_btn_ok"),
 				callback = MenuCallbackHandler.callback_msg_reset,
 			},
 			[2] = {
-				text = Util.localize("stopwatch_msg_reset_btn_cancel"),
+				text = Util:localize("stopwatch_msg_reset_btn_cancel"),
 				is_cancel_button = true,
 			},
 		}

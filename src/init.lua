@@ -6,6 +6,7 @@ if not _G.StopwatchMod then
         "Mod",
         "Util",
         "Settings",
+        "Attempt",
         "Records"
     }
     
@@ -22,11 +23,11 @@ if not _G.StopwatchMod then
     if debug_file ~= nil then 
         io.close(debug_file)
         _G.StopwatchMod.Debug = true
-        Util.log("Enabled Debugging Mode")
+        Util:log("Enabled Debugging Mode")
     end
 
     Settings:load()
     Records:load()
 
-    Util.log("Initialized", true)
+    Util:log("Initialized", true)
 end

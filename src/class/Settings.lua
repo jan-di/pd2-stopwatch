@@ -18,7 +18,7 @@ function Class:set(key, value)
 end
 
 function Class:load()
-    Util.log("Loading settings from '" .. self.SETTINGS_FILE .. "'")
+    Util:log("Loading settings from '" .. self.SETTINGS_FILE .. "'")
     local file = io.open(self.SETTINGS_FILE, "r")
     local default_settings = self:getDefaultSettings()
     local missing_setting = false
@@ -29,7 +29,7 @@ function Class:load()
 
         for setting, value in pairs(default_settings) do
             if self.data[setting] == nil then
-                Util.log("Missing setting '" .. setting .. "'")
+                Util:log("Missing setting '" .. setting .. "'")
                 missing_setting = true
                 self.data[setting] = default_settings[setting]
             end
@@ -42,7 +42,7 @@ function Class:load()
 end
 
 function Class:store()
-    Util.log("Storing records to '" .. self.SETTINGS_FILE .. "'")
+    Util:log("Storing records to '" .. self.SETTINGS_FILE .. "'")
     local file = io.open(self.SETTINGS_FILE, "w+")
 
     if file then

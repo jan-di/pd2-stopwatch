@@ -11,7 +11,7 @@ Hooks:PostHook(ObjectivesManager, "activate_objective", "Stopwatch_ObjectivesMan
             amount = nil
         }
 
-        Util.log("Activated Objective '" .. objective.id .. "'")
+        Util:log("Activated Objective '" .. objective.id .. "'")
     end
 end )
 
@@ -34,9 +34,9 @@ Hooks:PostHook(ObjectivesManager, "complete_objective", "Stopwatch_ObjectivesMan
         local objective_info = objective.stopwatch
 
 		if objective_info and not objective_info.completed and (not objective.amount or objective.current_amount == 0 or objective.current_amount == objective_info.amount) then
-			Records:complete_objective(objective)
+			Records:completeObjective(objective)
             objective_info.completed = true
-            Util.log("Completed Objective '" .. objective.id .. "'")
+            Util:log("Completed Objective '" .. objective.id .. "'")
 		end
 	end
 end )
@@ -47,9 +47,9 @@ Hooks:PostHook(ObjectivesManager, "remove_objective", "Stopwatch_ObjectivesManag
         local objective_info = objective.stopwatch
 
 		if objective_info and not objective_info.completed then
-			Records:complete_objective(objective)
+			Records:completeObjective(objective)
             objective_info.completed = true
-            Util.log("Removed (completed) Objective '" .. objective.id .. "'")
+            Util:log("Removed (completed) Objective '" .. objective.id .. "'")
 		end
 	end
 end )
