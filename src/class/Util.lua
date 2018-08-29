@@ -33,3 +33,7 @@ function Class.shorten(string, max_length)
     end
     return string
 end
+
+function Class.startsWith(str, start)
+    return str:sub(1, #start) == start
+ end

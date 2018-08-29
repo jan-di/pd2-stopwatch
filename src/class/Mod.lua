@@ -24,6 +24,10 @@ Class.COLORS = {
     [Class.COLOR_WHITE] = Color(1, 1, 1, 1)
 }
 
-Class.MESSAGE = {
-    attempt_broadcast = "8ec22389-f6a9-466e-b4fd-ae2455876150"
+Class.MAX_MESSAGE_LENGTH = 250 -- limitation by BLT
+Class.MESSAGE_ID_LENGTH = 9
+Class.MESSAGE_ID_PREFIX = "SW_"
+
+Class.MESSAGE = { -- length should be 9 chars, prefix + 7 random chars
+    SHARE_ATTEMPT = Class.MESSAGE_ID_PREFIX .."8ec223"
 }

@@ -11,20 +11,20 @@ Class.pending_records = {}
 
 function Class:complete_objective(objective)
     local attempt = self:create_attempt(objective)
-    self:share_attempt(attempt)
+    self:shareAttempt(attempt)
     self:check_attempt(attempt)
 end
 
 function Class:complete_level()
     local attempt = self:create_attempt()
-    self:share_attempt(attempt)
+    self:shareAttempt(attempt)
     self:check_attempt(attempt)
 end
 
 function Class:create_attempt(objective)
     local mod_info = ""
     local objective_id = ""
-    if _G.SilentAssassin and _G.SilentAssassin.settings["enabled"] then mod_info = mod_info .. "SilentAssassin;" end
+    if _G.SilentAssassin and _G.SilentAssassin.settings["enabled"] then mod_info = mod_info .. "SA;" end
     if objective and objective.id then
         objective_id = objective.id
     end
@@ -36,7 +36,7 @@ function Class:create_attempt(objective)
             gamemode = Global.game_settings.gamemode,
             difficulty = managers.job:current_difficulty_stars(),
             one_down = Global.game_settings.one_down,
-            team_ai = Global.game_settings.team_ai_option,
+            ai_enabled = Global.game_settings.team_ai_option,
             peer_count = LuaNetwork:GetNumberOfPeers(),
             mod_info = mod_info
         },
@@ -49,8 +49,60 @@ function Class:create_attempt(objective)
     return attempt
 end
 
-function Class:share_attempt(attempt)
-    LuaNetwork:SendToPeers(Mod.MESSAGE.attempt_broadcast, json.encode(attempt))
+function Class.compactAttempt(attempt)
+    assert(type(attempt) == "table", "attempt is not a table")
+
+    local compact_attempt = {
+        l = attempt.level_id,
+        o = attempt.objective_id,
+        p = {
+            gm = attempt.parameter.gamemode,
+            di = attempt.parameter.difficulty,
+            od = attempt.parameter.one_down,
+            pc = attempt.parameter.peer_count,
+            ai = attempt.parameter.ai_enabled,
+            mi = attempt.parameter.mod_info
+        },
+        i = {
+            ti = attempt.info.needed_time,
+            by = attempt.info.by_username
+        }
+    }
+    return compact_attempt
+end
+
+function Class.expandAttempt(compact_attempt)
+    assert(type(compact_attempt) == "table", "compact_attempt is not a table")
+
+    local attempt = {
+        level_id = compact_attempt.l,
+        objective_id = compact_attempt.o,
+        parameter = {
+            gamemode = compact_attempt.p.gm,
+            difficulty = compact_attempt.p.di,
+            one_down = compact_attempt.p.od,
+            peer_count = compact_attempt.p.pc,
+            ai_enabled = compact_attempt.p.ai,
+            mod_info = compact_attempt.p.mi
+    
+        },
+        info = {
+            needed_time = compact_attempt.i.ti,
+            by_username = compact_attempt.i.by
+        }
+    }
+    return attempt
+end
+
+function Class:shareAttempt(attempt)
+    local attempt_json = json.encode(Class.compactAttempt(attempt))
+    local message_length = string.len(Mod.MESSAGE.SHARE_ATTEMPT .. attempt_json) + 1
+
+    if message_length >= Mod.MAX_MESSAGE_LENGTH then
+        error("message is to long (" .. tostring(message_length) .. " chars) and won't be send")
+    else
+        LuaNetwork:SendToPeers(Mod.MESSAGE.SHARE_ATTEMPT, attempt_json)
+    end
 end
 
 function Class:check_attempt(attempt)
