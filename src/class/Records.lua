@@ -172,29 +172,61 @@ end
 
 function Class:load()
     Util:log("Loading records from '" .. self.RECORDS_FILE .. "'")
+
+    local compact_records = {}
 	local file = io.open(self.RECORDS_FILE, "r")
 	if file then
-		self.records = json.decode(file:read("*all"))
+		compact_records = json.decode(file:read("*all"))
 		file:close()
     end	
-    if _G.StopwatchMod.Debug then
-        local record_count, objective_count, level_count = 0, 0, 0
-        for level_id, level_data in pairs(self.records) do
-            level_count = level_count + 1
-            for objective_id, objective_data in pairs(level_data) do
-                objective_count = objective_count + 1
-                record_count = record_count + #objective_data
+
+    local record_count, objective_count, level_count = 0, 0, 0
+    for level_id, objectives in pairs(compact_records) do
+        level_count = level_count + 1
+        for objective_id, records in pairs(objectives) do
+            objective_count = objective_count + 1
+            record_count = record_count + #records
+            for _, record in ipairs(records) do
+                if not self.records[level_id] then
+                    self.records[level_id] = {}
+                end
+                if not self.records[level_id][objective_id] then
+                    self.records[level_id][objective_id] = {}
+                end
+                table.insert(self.records[level_id][objective_id], {
+                    info = Attempt:expandInfo(record.i),
+                    parameter = Attempt:expandParameter(record.p)
+                })
             end
         end
-        Util:log("Loaded " .. record_count .. " records (" .. objective_count .. " objectives; " .. level_count .. " levels)")
     end
+    Util:log("Loaded " .. record_count .. " records (" .. objective_count .. " objectives; " .. level_count .. " levels)")
 end
 
 function Class:store()
     Util:log("Storing records to '" .. self.RECORDS_FILE .. "'")
+
+    local compact_records = {}
+    for level_id, objectives in pairs(self.records) do
+        for objective_id, records in pairs(objectives) do
+            for _, record in ipairs(records) do
+                if not compact_records[level_id] then
+                    compact_records[level_id] = {}
+                end
+                if not compact_records[level_id][objective_id] then
+                    compact_records[level_id][objective_id] = {}
+                end
+                table.insert(compact_records[level_id][objective_id], {
+                    i = Attempt:compactInfo(record.info),
+                    p = Attempt:compactParameter(record.parameter)
+                })
+            end
+        end
+    end
+
 	local file = io.open(self.RECORDS_FILE, "w+")
 	if file then
-		file:write(json.encode(self.records))
+		file:write(json.encode(compact_records))
 		file:close()
 	end
 end
