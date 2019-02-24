@@ -1,5 +1,4 @@
 local Class = _G.StopwatchMod.Util
-local Settings = _G.StopwatchMod.Settings
 
 function Class:log(text, ignore_debug)
     ignore_debug = ignore_debug or false
@@ -23,13 +22,13 @@ end
 
 function Class:localChatMessage(prefix, message, color)
     if managers.chat then
-        managers.chat:_receive_message(ChatManager.GAME, prefix, message, color) 
+        managers.chat:_receive_message(ChatManager.GAME, prefix, message, color)
     end
 end
 
 function Class:shorten(string, max_length)
-    if string.len(string) > max_length then 
-        return string.sub(string, 1, max_length - 2) .. ".." 
+    if string.len(string) > max_length then
+        return string.sub(string, 1, max_length - 2) .. ".."
     end
     return string
 end

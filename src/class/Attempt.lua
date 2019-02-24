@@ -35,7 +35,7 @@ function Class:shareAttempt(attempt)
     local message_length = string.len(Mod.MESSAGE.SHARE_ATTEMPT .. attempt_json) + 1
 
     if message_length >= Mod.MAX_MESSAGE_LENGTH then
-        error("message is to long (" .. tostring(message_length) .. " chars) and won't be send")
+        error("message is too long (" .. tostring(message_length) .. " chars) and won't be send")
     else
         LuaNetwork:SendToPeers(Mod.MESSAGE.SHARE_ATTEMPT, attempt_json)
     end

@@ -22,13 +22,13 @@ function Class:completeLevel()
 end
 
 function Class:checkAttempt(attempt)
-    local objective_text, record, prefix, message, color
+    local objective_text, record, alltime_record, prefix, message, color
 
     if attempt.objective_id ~= "" then
         if managers.objectives and managers.objectives._objectives[attempt.objective_id] and managers.objectives._objectives[attempt.objective_id].text then
             objective_text = Util:shorten(managers.objectives._objectives[attempt.objective_id].text, 42)
-        else 
-            objective_text = "unknown objective" 
+        else
+            objective_text = "unknown objective"
         end
     else
         objective_text = Util:localize("stopwatch_chat_level_done")
@@ -44,13 +44,13 @@ function Class:checkAttempt(attempt)
             prefix = "-"
             color = Mod.COLORS[Settings:get("new_record_color")]
             self:addPendingRecord(attempt)
-        else 
+        else
             prefix = "="
 			color = Mod.COLORS[Settings:get("equal_record_color")]
         end
 		prefix = prefix .. Util:formatTime(math.abs(record.info.needed_time - attempt.info.needed_time))
 		message = "R=" .. Util:formatTime(record.info.needed_time)
-    else 
+    else
         prefix = "_"
         color = Mod.COLORS[Settings:get("init_record_color")]
 		message = "R=" .. Util:formatTime(attempt.info.needed_time)
@@ -140,7 +140,8 @@ function Class:addPendingRecord(attempt)
 end
 
 function Class:savePending()
-    local pending_records_count = table.getn(self.pending_records), record, index
+    local record, index
+    local pending_records_count = table.getn(self.pending_records)
 
     if pending_records_count > 0 then
         Util:log("Saving pending records (record count: " .. pending_records_count .. ")")
@@ -178,7 +179,7 @@ function Class:load()
 	if file then
 		compact_records = json.decode(file:read("*all"))
 		file:close()
-    end	
+    end
 
     local record_count, objective_count, level_count = 0, 0, 0
     for level_id, objectives in pairs(compact_records) do

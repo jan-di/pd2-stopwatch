@@ -4,7 +4,7 @@ local Attempt = _G.StopwatchMod.Attempt
 local Records = _G.StopwatchMod.Records
 local Util = _G.StopwatchMod.Util
 
-Hooks:Add("NetworkReceivedData", "Stopwatch_NetworkReceivedData", function(sender, id, data)
+Hooks:Add("NetworkReceivedData", "Stopwatch_NetworkReceivedData", function(_, id, data)
     if string.len(id) == Mod.MESSAGE_ID_LENGTH and Util:startsWith(id, Mod.MESSAGE_ID_PREFIX) then
         if string.len(data) >= Mod.MAX_MESSAGE_LENGTH then
             Util:log("Received message is to long and will be ignored")

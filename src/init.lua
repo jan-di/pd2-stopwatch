@@ -9,7 +9,7 @@ if not _G.StopwatchMod then
         "Attempt",
         "Records"
     }
-    
+
     for i, class in ipairs(classes) do
         _G.StopwatchMod[class] = {}
         dofile(ModPath .. "/src/class/" .. class .. ".lua")
@@ -20,7 +20,7 @@ if not _G.StopwatchMod then
     local Records = _G.StopwatchMod.Records
 
     local debug_file = io.open(ModPath .. "/debug", "r")
-    if debug_file ~= nil then 
+    if debug_file ~= nil then
         io.close(debug_file)
         _G.StopwatchMod.Debug = true
         Util:log("Enabled Debugging Mode")

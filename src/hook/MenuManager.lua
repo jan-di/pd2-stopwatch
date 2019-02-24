@@ -8,32 +8,32 @@ Hooks:Add("MenuManagerInitialize", "Stopwatch_MenuManagerInitialize", function(m
         Settings:set("is_active", (item:value() == "on" and true or false))
 		Settings:store()
 	end
-	
+
     MenuCallbackHandler.callback_disable_chat = function(self, item)
         Settings:set("disable_chat", (item:value() == "on" and true or false))
 		Settings:store()
 	end
-	
+
 	MenuCallbackHandler.callback_init_record_color = function(self, item)
 	    Settings:set("init_record_color", item:value())
 		Settings:store()
 	end
-	
+
 	MenuCallbackHandler.callback_new_record_color = function(self, item)
 		Settings:set("new_record_color", item:value())
 		Settings:store()
 	end
-	
+
 	MenuCallbackHandler.callback_old_record_color = function(self, item)
 		Settings:set("old_record_color", item:value())
 		Settings:store()
 	end
-	
+
 	MenuCallbackHandler.callback_equal_record_color = function(self, item)
 		Settings:set("equal_record_color", item:value())
 		Settings:store()
 	end
-	
+
 	MenuCallbackHandler.callback_btn_reset = function(self, item)
 		local menu_title = Util:localize("stopwatch_msg_reset_title")
 		local menu_message = Util:localize("stopwatch_msg_reset_message")
@@ -50,7 +50,7 @@ Hooks:Add("MenuManagerInitialize", "Stopwatch_MenuManagerInitialize", function(m
 		local menu = QuickMenu:new(menu_title, menu_message, menu_options)
 		menu:show()
 	end
-	
+
 	MenuCallbackHandler.callback_msg_reset = function(self, item)
 		Records:reset()
 		Records:store()
