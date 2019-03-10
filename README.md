@@ -1,3 +1,3 @@
 # Stopwatch
 
-A Payday 2 BLT-Mod which shows your current and best time for every completed objective.
+This repository has been moved. See https://gitlab.com/jan-di/pd2-stopwatch.
